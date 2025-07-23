@@ -131,6 +131,102 @@
         left: -15px;
       }
     }
+    /* Existing styles remain, add these below */
+.mobile-menu {
+  padding-top: 60px; /* Space for the close button and navbar */
+  overflow-y: auto; /* Allow scrolling if content overflows */
+  backdrop-filter: blur(100px);
+}
+
+.mobile-menu a {
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-menu a:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-menu {
+    padding: 60px 20px 20px 20px; /* Adjust padding for small screens */
+  }
+  
+  .navbar {
+    z-index: 60; /* Ensure navbar stays above mobile menu */
+  }
+}
+/* Add this at the end of your <style> section */
+body.light-mode {
+  background-color: #ffffff; /* Light background */
+  color: #000000; /* Dark text for contrast */
+}
+
+body.light-mode .navbar {
+  background: rgba(255, 255, 255, 0.8);
+  color: #000000;
+}
+
+body.light-mode .glass-card {
+  background: rgba(240, 240, 240, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .glass-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+}
+
+body.light-mode .neon-text {
+  text-shadow: 0 0 5px var(--primary), 0 0 10px var(--primary);
+}
+
+body.light-mode .btn-primary {
+  background: linear-gradient(45deg, var(--primary), var(--secondary));
+  color: #ffffff; /* Ensure text remains white on gradient */
+}
+
+body.light-mode .btn-primary::before {
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.2), transparent);
+}
+
+body.light-mode .skill-badge {
+  background: rgba(0, 0, 0, 0.1);
+  color: #000000;
+}
+
+body.light-mode .skill-badge:hover {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+body.light-mode .timeline-item::before {
+  border: 3px solid var(--primary);
+  background: #ffffff;
+}
+
+body.light-mode footer {
+  background-color: #f0f0f0;
+}
+
+body.light-mode .text-gray-300 {
+  color: #666666; /* Adjusted gray for light mode */
+}
+
+body.light-mode .text-gray-400 {
+  color: #888888; /* Adjusted gray for light mode */
+}
+
+body.light-mode .text-gray-500 {
+  color: #aaaaaa; /* Adjusted gray for light mode */
+}
+
+body.light-mode .bg-gray-800 {
+  background-color: #e0e0e0; /* Light gray background for badges */
+}
   </style>
 </head>
 <body>
@@ -606,126 +702,132 @@
   </footer>
 
   <script>
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        const targetId = this.getAttribute('href');
-        if(targetId === '#') return;
-        
-        const targetElement = document.querySelector(targetId);
-        if(targetElement) {
-          targetElement.scrollIntoView({
-            behavior: 'smooth'
-          });
-        }
-      });
-    });
-    
-    // Mobile menu toggle functionality
-    const mobileMenuButton = document.querySelector('.md\\:hidden');
-    const mobileMenu = document.createElement('div');
-    mobileMenu.className = 'fixed inset-0 bg-bg-darker z-50 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300';
-    mobileMenu.innerHTML = `
-      <div class="absolute top-4 right-4">
-        <button class="text-white text-4xl">×</button>
-      </div>
-      <div class="flex flex-col items-center space-y-8">
-        <a href="#home" class="text-white text-2xl hover:text-primary transition">Home</a>
-        <a href="#about" class="text-white text-2xl hover:text-primary transition">About</a>
-        <a href="#skills" class="text-white text-2xl hover:text-primary transition">Skills</a>
-        <a href="#projects" class="text-white text-2xl hover:text-primary transition">Projects</a>
-        <a href="#experience" class="text-white text-2xl hover:text-primary transition">Experience</a>
-        <a href="#contact" class="text-white text-2xl hover:text-primary transition">Contact</a>
-      </div>
-    `;
-    
-    document.body.appendChild(mobileMenu);
-    
-    const closeMenu = mobileMenu.querySelector('button');
-    
-    mobileMenuButton.addEventListener('click', () => {
-      mobileMenu.style.opacity = '1';
-      mobileMenu.style.pointerEvents = 'auto';
-    });
-    
-    closeMenu.addEventListener('click', () => {
-      mobileMenu.style.opacity = '0';
-      mobileMenu.style.pointerEvents = 'none';
-    });
-    
-    // Contact form handling
-    const contactForm = document.querySelector('form');
-    if(contactForm) {
-      contactForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const formData = {
-          name: document.getElementById('name').value,
-          email: document.getElementById('email').value,
-          subject: document.getElementById('subject').value,
-          message: document.getElementById('message').value
-        };
-        
-        try {
-          // In a real MERN app, this would be a fetch to your backend API
-          console.log('Form submitted:', formData);
-          alert('Thank you for your message! In a real application, this would send your data to the backend.');
-          contactForm.reset();
-        } catch (error) {
-          console.error('Error submitting form:', error);
-          alert('There was an error submitting your form. Please try again.');
-        }
-      });
-    }
-    
-    // Animation on scroll
-    function animateOnScroll() {
-      const elements = document.querySelectorAll('.glass-card, .timeline-item, .skill-badge');
+  // Smooth scrolling for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
       
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if(entry.isIntersecting) {
-            entry.target.style.opacity = 1;
-            entry.target.style.transform = 'translateY(0)';
-          }
+      const targetId = this.getAttribute('href');
+      if(targetId === '#') return;
+      
+      const targetElement = document.querySelector(targetId);
+      if(targetElement) {
+        targetElement.scrollIntoView({
+          behavior: 'smooth'
         });
-      }, { threshold: 0.1 });
-      
-      elements.forEach(el => {
-        el.style.opacity = 0;
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'all 0.5s ease';
-        observer.observe(el);
-      });
-    }
-    
-    window.addEventListener('DOMContentLoaded', animateOnScroll);
-    
-    // Theme switcher
-    const darkModeCheckbox = document.createElement('input');
-    darkModeCheckbox.type = 'checkbox';
-    darkModeCheckbox.className = 'hidden';
-    darkModeCheckbox.id = 'darkModeToggle';
-    
-    const darkModeLabel = document.createElement('label');
-    darkModeLabel.htmlFor = 'darkModeToggle';
-    darkModeLabel.className = 'fixed bottom-4 right-4 w-12 h-6 rounded-full flex items-center bg-gray-800 cursor-pointer z-50';
-    darkModeLabel.innerHTML = `
-      <span class="w-5 h-5 rounded-full bg-primary transform translate-x-1 transition-transform flex items-center justify-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-        </svg>
-      </span>
-    `;
-    
-    document.body.appendChild(darkModeCheckbox);
-    document.body.appendChild(darkModeLabel);
-    
-    darkModeLabel.addEventListener('click', () => {
-      document.body.classList.toggle('light-mode');
+      }
+      // Close mobile menu after clicking a link
+      const mobileMenu = document.querySelector('.mobile-menu');
+      if (mobileMenu) {
+        mobileMenu.style.opacity = '0';
+        mobileMenu.style.pointerEvents = 'none';
+      }
     });
-  </script>
+  });
+  
+  // Mobile menu toggle functionality
+  const mobileMenuButton = document.querySelector('.md\\:hidden');
+  const mobileMenu = document.createElement('div');
+  mobileMenu.className = 'mobile-menu fixed inset-0 bg-bg-darker bg-opacity-90 z-50 flex flex-col items-center justify-start opacity-0 pointer-events-none transition-opacity duration-300';
+  mobileMenu.innerHTML = `
+    <div class="w-full p-4 bg-bg-darker">
+      <button class="text-white text-4xl absolute top-4 right-4">×</button>
+    </div>
+    <div class="flex flex-col items-center space-y-8 p-6 w-full">
+      <a href="#home" class="text-white text-2xl hover:text-primary transition">Home</a>
+      <a href="#about" class="text-white text-2xl hover:text-primary transition">About</a>
+      <a href="#skills" class="text-white text-2xl hover:text-primary transition">Skills</a>
+      <a href="#projects" class="text-white text-2xl hover:text-primary transition">Projects</a>
+      <a href="#experience" class="text-white text-2xl hover:text-primary transition">Experience</a>
+      <a href="#contact" class="text-white text-2xl hover:text-primary transition">Contact</a>
+    </div>
+  `;
+  
+  document.body.appendChild(mobileMenu);
+  
+  const closeMenu = mobileMenu.querySelector('button');
+  
+  mobileMenuButton.addEventListener('click', () => {
+    mobileMenu.style.opacity = '1';
+    mobileMenu.style.pointerEvents = 'auto';
+  });
+  
+  closeMenu.addEventListener('click', () => {
+    mobileMenu.style.opacity = '0';
+    mobileMenu.style.pointerEvents = 'none';
+  });
+  
+  // Contact form handling
+  const contactForm = document.querySelector('form');
+  if(contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        subject: document.getElementById('subject').value,
+        message: document.getElementById('message').value
+      };
+      
+      try {
+        console.log('Form submitted:', formData);
+        alert('Thank you for your message! In a real application, this would send your data to the backend.');
+        contactForm.reset();
+      } catch (error) {
+        console.error('Error submitting form:', error);
+        alert('There was an error submitting your form. Please try again.');
+      }
+    });
+  }
+  
+  // Animation on scroll
+  function animateOnScroll() {
+    const elements = document.querySelectorAll('.glass-card, .timeline-item, .skill-badge');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          entry.target.style.opacity = 1;
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    elements.forEach(el => {
+      el.style.opacity = 0;
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'all 0.5s ease';
+      observer.observe(el);
+    });
+  }
+  
+  window.addEventListener('DOMContentLoaded', animateOnScroll);
+  
+  // Theme switcher
+  // Theme switcher
+const darkModeCheckbox = document.createElement('input');
+darkModeCheckbox.type = 'checkbox';
+darkModeCheckbox.className = 'hidden';
+darkModeCheckbox.id = 'darkModeToggle';
+
+const darkModeLabel = document.createElement('label');
+darkModeLabel.htmlFor = 'darkModeToggle';
+darkModeLabel.className = 'fixed bottom-4 right-4 w-12 h-6 rounded-full flex items-center bg-gray-800 cursor-pointer z-50';
+darkModeLabel.innerHTML = `
+  <span class="w-5 h-5 rounded-full bg-primary transform translate-x-1 transition-transform flex items-center justify-center">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+    </svg>
+  </span>
+`;
+
+document.body.appendChild(darkModeCheckbox);
+document.body.appendChild(darkModeLabel);
+
+darkModeLabel.addEventListener('click', () => {
+  document.body.classList.toggle('light-mode');
+});
+</script>
 </body>
 </html>
